@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
     {
       "type" : "text"
     }
-  )
+  );
 });
 
 module.exports = router;
