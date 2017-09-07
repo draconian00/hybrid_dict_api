@@ -20,7 +20,7 @@ router.get('/:query', (req, res) => {
   let api_url = 'https://openapi.naver.com/v1/papago/n2mt';
   let query = req.params.query || '';
 
-  console.log(query);
+  // console.log(query);
 
   if (!query.length) {
     return res.status(400).json({error: 'Incorrect query'});
