@@ -4,13 +4,15 @@ const router = express.Router();
 const request = require('request');
 const cheerio = require('cheerio');
 
+const KEYS = require('../../config/keyfile');
+
 const cld = require('cld');
 
 const LanguageDetect = require('languagedetect');
 const lngDetector = new LanguageDetect();
 
-const client_id = "_YQBM53wbzxmNDriiqQP";
-const client_secret = "BEs8GvhbVf";
+const client_id = KEYS.NAVER_client_id;
+const client_secret = KEYS.NAVER_client_secret;
 
 let url = 'https://translate.google.co.kr/#en/ko/test';
 
