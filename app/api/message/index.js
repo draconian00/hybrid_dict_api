@@ -14,7 +14,8 @@ const client_id = KEYS.NAVER_client_id;
 const client_secret = KEYS.NAVER_client_secret;
 
 router.post('/', (req, res) => {
-  const query = req.body.content || '';
+  const query = req.body.content;
+
   if (!query.length) {
     let response = {
       "text" : "검색어 오류 입니다. 다시 시도해 주세요."
@@ -59,8 +60,9 @@ router.post('/', (req, res) => {
 
   request.post(options, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
-      let translatedText = body.message.result.translatedText;
+      // res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
+      body_json = JSON.parse(body);
+      let translatedText = body_json.message.result.translatedText;
       let response = {
         "text" : translatedText
       }
@@ -69,6 +71,7 @@ router.post('/', (req, res) => {
       let response = {
         "text" : "번역기 오류 입니다. 다시 시도해 주세요."
       }
+      return res.json(response);
     }
   });
 });
