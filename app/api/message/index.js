@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 // const controller = require('./translate.controller');
 const request = require('request');
-const cheerio = require('cheerio');
 
 const KEYS = require('../../config/keyfile');
 
@@ -14,17 +13,27 @@ const lngDetector = new LanguageDetect();
 const client_id = KEYS.NAVER_client_id;
 const client_secret = KEYS.NAVER_client_secret;
 
-let url = 'https://translate.google.co.kr/#en/ko/test';
-
-router.get('/:query', (req, res) => {
-  let api_url = 'https://openapi.naver.com/v1/papago/n2mt';
-  let query = req.params.query || '';
-
-  // console.log(query);
-
+router.post('/', (req, res) => {
+  const query = req.body.content || '';
   if (!query.length) {
-    return res.status(400).json({error: 'Incorrect query'});
+    let response = {
+      "message":{
+        "text" : "검색어 오류 입니다. 다시 시도해 주세요."
+      }
+    }
+    return res.json(response);
   }
+  const type = req.body.type || '';
+  if (type !== "text") {
+    let response = {
+      "message":{
+        "text" : "텍스트만 입력할 수 있습니다. 다시 시도해 주세요."
+      }
+    }
+    return res.json(response);
+  }
+
+  let api_url = 'https://openapi.naver.com/v1/papago/n2mt';
 
   let lngDetect;
   let source, target;
@@ -55,10 +64,19 @@ router.get('/:query', (req, res) => {
   request.post(options, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
-      res.end(body);
+      let translatedText = body.message.result.translatedText;
+      let response = {
+        "message":{
+          "text" : translatedText
+        }
+      }
+      return res.json(response);
     } else {
-      res.status(response.statusCode).end();
-      console.log('error = ' + response.statusCode);
+      let response = {
+        "message": {
+          "text" : "번역기 오류 입니다. 다시 시도해 주세요."
+        }
+      }
     }
   });
 });
