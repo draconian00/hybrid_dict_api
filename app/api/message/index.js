@@ -18,14 +18,18 @@ router.post('/', (req, res) => {
 
   if (!query.length) {
     let response = {
-      "text" : "검색어 오류 입니다. 다시 시도해 주세요."
+      "message": {
+        "text" : "검색어 오류 입니다. 다시 시도해 주세요."
+      }
     }
     return res.json(response);
   }
   const type = req.body.type || '';
   if (type !== "text") {
     let response = {
-      "text" : "텍스트만 입력할 수 있습니다. 다시 시도해 주세요."
+      "message": {
+        "text" : "텍스트만 입력할 수 있습니다. 다시 시도해 주세요."
+      }
     }
     return res.json(response);
   }
@@ -63,13 +67,18 @@ router.post('/', (req, res) => {
       // res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
       body_json = JSON.parse(body);
       let translatedText = body_json.message.result.translatedText;
+
       let response = {
-        "text" : translatedText
+        "message": {
+          "text" : translatedText
+        }
       }
       return res.json(response);
     } else {
       let response = {
-        "text" : "번역기 오류 입니다. 다시 시도해 주세요."
+        "message": {
+          "text" : "번역기 오류 입니다. 다시 시도해 주세요."
+        }
       }
       return res.json(response);
     }
