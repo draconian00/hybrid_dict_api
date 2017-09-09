@@ -53,6 +53,9 @@ router.post('/', (req, res) => {
     } else if (lngDetect.languages[0].code === 'ko') {
       source = lngDetect.languages[0].code;
       target = 'en';
+    } else if (lngDetect.languages[0].code === 'en') {
+      source = lngDetect.languages[0].code;
+      target = 'ko';
     }
   }
 
@@ -63,6 +66,7 @@ router.post('/', (req, res) => {
    };
 
   request.post(options, function (error, response, body) {
+    console.log(error, body);
     if (!error && response.statusCode == 200) {
       // res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
       body_json = JSON.parse(body);
