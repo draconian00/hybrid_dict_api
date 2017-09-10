@@ -53,7 +53,7 @@ router.post('/', (req, res) => {
     } else if (lngDetect.languages[0].code === 'ko') {
       source = lngDetect.languages[0].code;
       target = 'en';
-    } else if (lngDetect.languages[0].code === 'en') {
+    } else {
       source = lngDetect.languages[0].code;
       target = 'ko';
     }
