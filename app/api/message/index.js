@@ -66,25 +66,26 @@ router.post('/', (req, res) => {
    };
 
   request.post(options, function (error, response, body) {
-    console.log(error, body);
     if (!error && response.statusCode == 200) {
       // res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
-      body_json = JSON.parse(body);
+      let body_json = JSON.parse(body);
       let translatedText = body_json.message.result.translatedText;
 
-      let response = {
+      let res_to_user = {
         "message": {
           "text" : translatedText
         }
       }
-      return res.json(response);
+      return res.json(res_to_user);
     } else {
-      let response = {
+      let body_json = JSON.parse(body);
+      let err_message = body_json.errorMessage;
+      let res_to_user = {
         "message": {
-          "text" : "번역기 오류 입니다. 다시 시도해 주세요."
+          "text" : err_message
         }
       }
-      return res.json(response);
+      return res.json(res_to_user);
     }
   });
 });
